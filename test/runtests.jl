@@ -10,13 +10,14 @@ quiet = length(ARGS) > 0 && ARGS[1] == "-q"
 anyerrors = false
 
 # Specify tests
-tests = ["TestException.jl"]
+tests_dir = joinpath(@__DIR__, "tests")
+tests = ["exception.jl"]
 
 # Print info
 println("\e[1;32mRUNNING TESTS\e[0m for `Exceptions.jl`")
 
 # Run tests
-for test in tests
+for test in joinpath.(tests_dir, tests)
 
     # Run a test
     try
