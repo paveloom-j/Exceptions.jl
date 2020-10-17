@@ -6,8 +6,6 @@ using Exceptions
 using SyntaxTree
 using Test
 
-eval(quote @exception m0 end)
-
 # Print the header
 println("\e[1;32mRUNNING\e[0m: exception.jl")
 
@@ -33,6 +31,11 @@ end
 
     @test_nowarn eval(quote @exception m0 end)
     @test_nowarn eval(quote @exception m1 file::String end)
+    @test_nowarn eval(quote
+        @exception m2 file::String s::Symbol context = begin
+            docstring = "Doc" * docstring
+        end
+    end)
 
     @test_throws(
         Exceptions.Internal.OnlyOneContext,
@@ -69,6 +72,35 @@ end
     @test fieldnames(e0) == ()
     @test "$(@doc(e0))" == "Docstring\n"
     @test sprint(showerror, e0()) == "\n\nMain.TestException.e0:\nErrorMessage\n"
+
+end
+
+# One argument
+@testset "@m1" begin
+
+    @test_nowarn eval(quote @m1 e1 "Docstring" "ErrorMessage" end)
+
+end
+
+# One arguments
+@testset "e1" begin
+
+    @test fieldnames(e1) == (:file,)
+
+end
+
+# Two arguments and a context
+@testset "@m2" begin
+
+    @test_nowarn eval(quote @m2 e2 "string" "ErrorMessage" end)
+
+end
+
+# Two arguments and a context
+@testset "e2" begin
+
+    @test fieldnames(e2) == (:file, :s)
+    @test "$(@doc(e2))" == "Docstring\n"
 
 end
 
