@@ -1,6 +1,6 @@
 __precompile__()
 
-baremodule Exceptions
+baremodule OOF
 
 module Internal
 
