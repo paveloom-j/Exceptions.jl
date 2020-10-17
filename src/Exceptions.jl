@@ -1,13 +1,13 @@
 __precompile__()
 
-baremodule OOF
+baremodule Exceptions
 
 module Internal
 
 export @exception
 
 # Load exceptions
-include("exceptions.jl")
+include("exceptions2.jl")
 
 # Load macros
 include("exception.jl")
