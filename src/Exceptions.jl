@@ -2,20 +2,20 @@ __precompile__()
 
 module Exceptions
 
-# module Internal
+module Internal
 
 # export @exception
 
 # Load exceptions
-# include("exceptions.jl")
+include("exceptions.jl")
 
 # Load macros
 # include("exception.jl")
 
-# end
+end
 
 # Export the second-level components
-# using .Internal
+using .Internal
 
 # Export the first-level components
 # export @exception
