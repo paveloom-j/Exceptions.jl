@@ -104,15 +104,26 @@ macro exception(
                 docstring::Union{Expr, String},
                 error_message_bits::Union{Expr, String}...,
             )
-                module_name = __module__
-
                 args = $(args)
+
+                # Defaults
+                module_name = __module__
                 error_header = "$(module_name).$(exception_name):"
 
                 $(context)
 
+                e = $(exceptions)
+
                 return esc(
                     quote
+                        # Checks
+                        if !($(docstring) isa String)
+                            throw($(e[:DocstringIsNotAString])())
+                        end
+                        if !($(error_message_bits...) isa String)
+                            throw($(e[:ErrorMessageIsNotAString])())
+                        end
+
                         @doc $(docstring)
                         mutable struct $(exception_name) <: Exception
                             $(args...)

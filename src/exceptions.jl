@@ -3,7 +3,50 @@
 
 # Did you watch Inception?
 
-@exception aux
+exceptions = Dict{Symbol, Any}()
+
+macro aux(
+    exception_name::Symbol,
+    docstring::Union{Expr, String},
+    error_message_bits::Union{Expr, String}...,
+)
+    module_name = __module__
+    error_header = "$(module_name).$(exception_name):"
+
+    symbol = QuoteNode(exception_name)
+
+    return esc(
+        quote
+            @doc $(docstring)
+            mutable struct $(exception_name) <: Exception
+            end
+
+            Base.showerror(io::IO, e::$(module_name).$(exception_name)) =
+            print(
+                io, string(
+                    '\n', '\n',
+                    $(error_header), '\n',
+                    $(error_message_bits...), '\n',
+                )
+            )
+
+            push!(exceptions, $(symbol) => $(exception_name))
+        end
+    )
+end
+
+@aux(
+    DocstringIsNotAString,
+    "Exception thrown when the passed expression for docstring does not yield a string.",
+    "The passed expression for docstring does not yield a string."
+)
+
+@aux(
+    ErrorMessageIsNotAString,
+    "Exception thrown when the passed expression(s) for error message (do)es " *
+    "not yield a string.",
+    "The passed expression(s) for error message (do)es not yield a string."
+)
 
 @aux(
     OnlyOneContext,

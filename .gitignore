@@ -1,2 +1,8 @@
 # User's Makefile(s)
 Makefile
+
+# Manifest files
+Manifest.toml
+
+# Side files when generating documentation
+docs/build
