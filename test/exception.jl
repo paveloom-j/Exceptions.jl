@@ -2,7 +2,7 @@
 
 module TestException
 
-using Exceptions
+# using Exceptions
 using SyntaxTree
 using Test
 
