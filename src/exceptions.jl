@@ -3,7 +3,7 @@
 
 # Did you watch Inception?
 
-exceptions = Dict{Symbol, Any}()
+# exceptions = Dict{Symbol, Any}()
 
 macro aux(
     exception_name::Symbol,
