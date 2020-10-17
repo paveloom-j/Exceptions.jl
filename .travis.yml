@@ -31,6 +31,11 @@ jobs:
         - julia --project=docs/ -e 'using Pkg; Pkg.develop(path=pwd()); Pkg.instantiate()'
         - julia --project=docs/ docs/make.jl
     - stage: "Tests"
+      name: "Julia 1.5 (Linux, x32)"
+      julia: 1.5
+      os: linux
+      arch: i386
+    - stage: "Tests"
       name: "Julia 1.5 (macOS, x64)"
       julia: 1.5
       os: osx
