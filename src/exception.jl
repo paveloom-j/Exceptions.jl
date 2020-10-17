@@ -112,17 +112,17 @@ macro exception(
 
                 $(context)
 
-                # e = $(exceptions)
+                e = $(exceptions)
 
                 return esc(
                     quote
-                        # # Checks
-                        # if !($(docstring) isa String)
-                        #     throw($(e[:DocstringIsNotAString])())
-                        # end
-                        # if !($(error_message_bits...) isa String)
-                        #     throw($(e[:ErrorMessageIsNotAString])())
-                        # end
+                        # Checks
+                        if !($(docstring) isa String)
+                            throw($(e[:DocstringIsNotAString])())
+                        end
+                        if !($(error_message_bits...) isa String)
+                            throw($(e[:ErrorMessageIsNotAString])())
+                        end
 
                         @doc $(docstring)
                         mutable struct $(exception_name) <: Exception

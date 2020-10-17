@@ -4,13 +4,13 @@ module Exceptions
 
 module Internal
 
-# export @exception
+export @exception
 
 # Load exceptions
 include("exceptions.jl")
 
 # Load macros
-# include("exception.jl")
+include("exception.jl")
 
 end
 
@@ -18,6 +18,6 @@ end
 using .Internal
 
 # Export the first-level components
-# export @exception
+export @exception
 
 end
