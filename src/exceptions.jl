@@ -28,7 +28,7 @@ macro aux(
                 )
             )
 
-            exceptions[$(QuoteNode(exception_name))] = $(exception_name)
+            # exceptions[$(QuoteNode(exception_name))] = $(exception_name)
         end
     )
 end

@@ -49,15 +49,15 @@ end
 
     @test_nowarn eval(quote @m0 e0 "Docstring" "ErrorMessage" end)
 
-    @test_throws(
-        Exceptions.Internal.DocstringIsNotAString,
-        quote @m0 e 1+1 "ErrorMessage" end
-    )
+    # @test_throws(
+    #     Exceptions.Internal.DocstringIsNotAString,
+    #     quote @m0 e 1+1 "ErrorMessage" end
+    # )
 
-    @test_throws(
-        Exceptions.Internal.ErrorMessageIsNotAString,
-        quote @m0 e "ErrorMessage" 2+2 end
-    )
+    # @test_throws(
+    #     Exceptions.Internal.ErrorMessageIsNotAString,
+    #     quote @m0 e "ErrorMessage" 2+2 end
+    # )
 
 end
 
