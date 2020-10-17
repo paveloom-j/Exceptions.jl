@@ -13,8 +13,6 @@ macro aux(
     module_name = __module__
     error_header = "$(module_name).$(exception_name):"
 
-    symbol = QuoteNode(exception_name)
-
     return esc(
         quote
             @doc $(docstring)
@@ -30,7 +28,7 @@ macro aux(
                 )
             )
 
-            exceptions[$(symbol)] = $(exception_name)
+            exceptions[$(QuoteNode(exception_name))] = $(exception_name)
         end
     )
 end
