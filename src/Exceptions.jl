@@ -1,6 +1,6 @@
-__precompile__()
+# __precompile__()
 
-module Exceptions
+baremodule Exceptions
 
 module Internal
 
