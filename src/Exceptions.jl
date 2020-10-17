@@ -1,8 +1,8 @@
 __precompile__()
 
-baremodule Exceptions
+module Exceptions
 
-module Internal
+# module Internal
 
 # export @exception
 
@@ -12,10 +12,10 @@ include("exceptions.jl")
 # Load macros
 # include("exception.jl")
 
-end
+# end
 
 # Export the second-level components
-using .Internal
+# using .Internal
 
 # Export the first-level components
 # export @exception
