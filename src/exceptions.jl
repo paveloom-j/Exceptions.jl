@@ -30,7 +30,7 @@ macro aux(
                 )
             )
 
-            push!(exceptions, $(symbol) => $(exception_name))
+            exceptions[$(symbol)] = $(exception_name)
         end
     )
 end
