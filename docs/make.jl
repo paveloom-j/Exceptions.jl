@@ -38,7 +38,7 @@ makedocs(
 # Deploy documentation
 deploydocs(
     # Specify a repository
-    repo = "github.com/paveloom-j/PDFHighlights.jl.git",
+    repo = "github.com/paveloom-j/Exceptions.jl.git",
 
     # Specify a development branch
     devbranch = "develop",
