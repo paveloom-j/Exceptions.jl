@@ -30,6 +30,10 @@ macro_name = :name
 args = (:(arg1::String), :(arg2::Int))
 context = :()
 
+exceptions = Dict{Symbol, Any}()
+exceptions[:DocstringIsNotAString] = Exceptions.Internal.DocstringIsNotAString
+exceptions[:ErrorMessageIsNotAString] = Exceptions.Internal.ErrorMessageIsNotAString
+
 d1 = @capture_out @macroexpand(@exception(name, arg1::String, arg2::Int)) |>
      linefilter! |> dump
 
@@ -39,15 +43,26 @@ d2 = @capture_out quote
         docstring::Union{Expr, String},
         error_message_bits::Union{Expr, String}...,
     )
-        module_name = __module__
-
         args = \$(args)
+
+        # Defaults
+        module_name = __module__
         error_header = "\$(module_name).\$(exception_name):"
 
         \$(context)
 
+        e = \$(exceptions)
+
         return esc(
             quote
+                # Checks
+                if !(\$(docstring) isa String)
+                    throw(\$(e[:DocstringIsNotAString])())
+                end
+                if !(\$(error_message_bits...) isa String)
+                    throw(\$(e[:ErrorMessageIsNotAString])())
+                end
+
                 @doc \$(docstring)
                 mutable struct \$(exception_name) <: Exception
                     \$(args...)

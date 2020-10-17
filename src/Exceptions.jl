@@ -1,7 +1,9 @@
 __precompile__()
 
+"f"
 baremodule Exceptions
 
+"f"
 module Internal
 
 export @exception
