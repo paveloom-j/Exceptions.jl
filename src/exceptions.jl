@@ -33,16 +33,16 @@
 #     )
 # end
 
-@doc "Exception thrown when the passed expression for docstring does not yield a string."
-mutable struct DocstringIsNotAString <: Exception
-end
+# @doc "Exception thrown when the passed expression for docstring does not yield a string."
+# mutable struct DocstringIsNotAString <: Exception
+# end
 
-Base.showerror(io::IO, e::DocstringIsNotAString) =
-print(
-    io, string(
-        '\n', '\n',
-    )
-)
+# Base.showerror(io::IO, e::DocstringIsNotAString) =
+# print(
+#     io, string(
+#         '\n', '\n',
+#     )
+# )
 
 # @aux(
 #     DocstringIsNotAString,
