@@ -34,7 +34,7 @@ jobs:
       name: "Julia 1.5 (Linux, x32)"
       julia: 1.5
       os: linux
-      arch: x32
+      arch: x86
     - stage: "Tests"
       name: "Julia 1.5 (macOS, x64)"
       julia: 1.5
