@@ -2,9 +2,11 @@
 
 module TestException
 
-using Exceptions
+# using Exceptions
 # using SyntaxTree
-# using Test
+using Test
+
+eval(quote @exception m0 end)
 
 # Print the header
 # println("\e[1;32mRUNNING\e[0m: exception.jl")
