@@ -10,7 +10,7 @@ export @exception
 include("exceptions.jl")
 
 # Load macros
-include("exception.jl")
+# include("exception.jl")
 
 end
 

@@ -10,7 +10,9 @@ quiet = length(ARGS) > 0 && ARGS[1] == "-q"
 anyerrors = false
 
 # Specify tests
-tests = ["exception.jl"]
+# tests = ["exception.jl"]
+tests = []
+using Exceptions
 
 # Print info
 println("\e[1;32mRUNNING TESTS\e[0m for `Exceptions.jl`")

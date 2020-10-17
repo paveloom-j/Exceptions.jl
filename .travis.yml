@@ -36,7 +36,7 @@ jobs:
       name: "Julia 1.5 (macOS, x64)"
       julia: 1.5
       os: osx
-      # osx_image: xcode12
+      osx_image: xcode12
     - stage: "Tests"
       name: "Julia Nightly (Linux, x64)"
       julia: nightly
@@ -46,4 +46,4 @@ jobs:
       name: "Julia Nightly (macOS, x64)"
       julia: nightly
       os: osx
-      # osx_image: xcode12
+      osx_image: xcode12
