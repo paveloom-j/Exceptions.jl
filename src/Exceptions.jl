@@ -7,10 +7,10 @@ module Internal
 export @exception
 
 # Load exceptions
-include("exceptions2.jl")
+include("include/exceptions.jl")
 
 # Load macros
-include("exception.jl")
+include("include/exception.jl")
 
 end
 
