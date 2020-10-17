@@ -44,7 +44,7 @@ jobs:
       name: "Julia 1.5 (Windows, x32)"
       julia: 1.5
       os: windows
-      arch: i386
+      arch: x32
     - stage: "Tests"
       name: "Julia 1.5 (Windows, x64)"
       julia: 1.5
@@ -64,7 +64,7 @@ jobs:
       name: "Julia Nightly (Windows, x32)"
       julia: 1.5
       os: windows
-      arch: i386
+      arch: x32
     - stage: "Tests"
       name: "Julia Nightly (Windows, x64)"
       julia: 1.5
