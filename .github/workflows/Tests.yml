@@ -17,6 +17,7 @@ on:
       - v*
     types:
       - completed
+      - requested
 
 jobs:
   test:
