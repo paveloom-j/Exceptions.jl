@@ -1,23 +1,12 @@
 name: Tests
 
-# on:
-#   push:
-#     branches-ignore:
-#       - master
-#       - develop
-#     tags-ignore:
-#       - v*
 on:
-  workflow_run:
-    workflows: ["Docs & Code Coverage"]
+  push:
     branches-ignore:
       - master
       - develop
     tags-ignore:
       - v*
-    types:
-      - completed
-      - requested
 
 jobs:
   test:
