@@ -47,6 +47,11 @@ end
         quote @exception(m, var=v1) end,
     )
 
+    @test_throws(
+        Exceptions.Internal.FieldsOnly,
+        quote @exception(m, 1+1) end,
+    )
+
 end
 
 # No arguments (macro)

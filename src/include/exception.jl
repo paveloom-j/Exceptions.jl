@@ -45,7 +45,6 @@ d2 = @capture_out quote
     )
         args = \$(args)
 
-        # Defaults
         module_name = __module__
         error_header = "\$(module_name).\$(exception_name):"
 
@@ -97,17 +96,21 @@ macro exception(
     context = :()
 
     for (index, arg) in pairs(args)
-        if arg.head == :(=)
-            if arg.args[1] == :context
-                if context_specified
-                    throw(OnlyOneContext())
+        if typeof(arg) == Expr
+            if arg.head == :(=)
+                if arg.args[1] == :context
+                    if context_specified
+                        throw(OnlyOneContext())
+                    else
+                        context = args[index]
+                        args = args[1:end .≠ index]
+                        context_specified = true
+                    end
                 else
-                    context = args[index]
-                    args = args[1:end .≠ index]
-                    context_specified = true
+                    throw(OnlyOneEquation())
                 end
-            else
-                throw(OnlyOneEquation())
+            elseif arg.head ≠ :(::) || length(arg.args) ≠ 2
+                throw(FieldsOnly())
             end
         end
     end
@@ -121,7 +124,6 @@ macro exception(
             )
                 args = $(args)
 
-                # Defaults
                 module_name = __module__
                 error_header = "$(module_name).$(exception_name):"
 
