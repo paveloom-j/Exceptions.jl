@@ -47,6 +47,12 @@ end
 )
 
 @aux(
+    FieldsOnly,
+    "Exception thrown when the passed argument is not a structure field.",
+    "The passed argument is not a structure field (e.g. `file::String` or `file`)."
+)
+
+@aux(
     OnlyOneContext,
     "Exception thrown when more than one context has been passed.",
     "Only one `context` specification is allowed.",
