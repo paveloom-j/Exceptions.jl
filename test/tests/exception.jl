@@ -98,14 +98,21 @@ end
 @testset "@m2" begin
 
     @test_nowarn eval(quote @m2 e2 "string" "ErrorMessage" end)
+    @test_nowarn eval(quote
+        @m2 e2c "string" "ErrorMessage" context = begin
+        quote docstring = replace(docstring, "Doc" => "") end
+        end
+    end)
 
 end
 
 # Two arguments and a context
-@testset "e2" begin
+@testset "e2 / e2c" begin
 
     @test fieldnames(e2) == (:file, :s)
     @test "$(@doc(e2))" == "Docstring\n"
+
+    @test "$(@doc(e2c))" == "string\n"
 
 end
 

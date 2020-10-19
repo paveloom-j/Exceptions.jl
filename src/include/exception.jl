@@ -93,7 +93,7 @@ macro exception(
     args::Expr...,
 )
     context_specified = false
-    context = :()
+    global_context = :()
 
     for (index, arg) in pairs(args)
         if typeof(arg) == Expr
@@ -102,7 +102,7 @@ macro exception(
                     if context_specified
                         throw(OnlyOneContext())
                     else
-                        context = args[index]
+                        global_context = args[index]
                         args = args[1:end .≠ index]
                         context_specified = true
                     end
@@ -127,34 +127,80 @@ macro exception(
                 module_name = __module__
                 error_header = "$(module_name).$(exception_name):"
 
-                $(context)
+                $(global_context)
 
                 e = $(exceptions)
 
+                context_specified = false
+                local_context = :()
+
+                for (index, arg) in pairs(error_message_bits)
+                    if typeof(arg) == Expr
+                        if arg.head == :(=)
+                            if arg.args[1] == :context
+                                if context_specified
+                                    throw(e[:OnlyOneContext]())
+                                else
+                                    local_context = error_message_bits[index]
+                                    error_message_bits = error_message_bits[1:end .≠ index]
+                                    context_specified = true
+                                end
+                            else
+                                throw(e[:OnlyOneEquation]())
+                            end
+                        end
+                    end
+                end
+
                 return esc(
                     quote
-                        # Checks
-                        if !($(docstring) isa String)
-                            throw($(e[:DocstringIsNotAString])())
-                        end
-                        if !($(error_message_bits...) isa String)
-                            throw($(e[:ErrorMessageIsNotAString])())
-                        end
+                        macro $(exception_name)()
 
-                        @doc $(docstring)
-                        mutable struct $(exception_name) <: Exception
-                            $(args...)
-                            $(exception_name)($(args...)) = new($(args...))
-                        end
+                            docstring = $(docstring)
+                            error_message_bits = $(error_message_bits)
 
-                        Base.showerror(io::IO, e::$(module_name).$(exception_name)) =
-                        print(
-                            io, string(
-                                '\n', '\n',
-                                $(error_header), '\n',
-                                $(error_message_bits...), '\n',
+                            args = $(args)
+
+                            module_name = $(module_name)
+                            exception_name2 = $(exception_name)
+
+                            $(local_context)
+
+                            e = $(e)
+
+                            return esc(
+                                quote
+                                    # Checks
+                                    if !($(docstring) isa String)
+                                        throw($(e[:DocstringIsNotAString])())
+                                    end
+                                    if !($(error_message_bits...) isa String)
+                                        throw($(e[:ErrorMessageIsNotAString])())
+                                    end
+
+                                    @doc $(docstring)
+                                    mutable struct $(exception_name2) <: Exception
+                                        $(args...)
+                                        $(exception_name2)($(args...)) = new($(args...))
+                                    end
+
+                                    Base.showerror(
+                                        io::IO,
+                                        e::$(module_name).$(exception_name2)
+                                    ) =
+                                    print(
+                                        io, string(
+                                            '\n', '\n',
+                                            $(error_header), '\n',
+                                            $(error_message_bits...), '\n',
+                                        )
+                                    )
+                                end
                             )
-                        )
+                        end
+
+                        # $(Expr(:macrocall, Symbol("@", exception_name), nothing))
+
                     end
                 )
             end
