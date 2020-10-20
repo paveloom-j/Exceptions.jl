@@ -1,10 +1,10 @@
 # This piece of code creates a helper macro to create exceptions
 # that will be thrown when the main macro is not used correctly
 
-# Did you watch Inception?
+# Did you watch Inception, by the way?
 
-"A dictionary (Symbol => Any) containing all exceptions used in this package."
-exceptions = Dict{Symbol, Any}()
+"A dictionary (`Symbol => Any`) containing all exceptions used in this package."
+EXCEPTIONS = Dict{Symbol, Any}()
 
 """
     @aux(
@@ -50,7 +50,7 @@ macro aux(
                 )
             )
 
-            exceptions[$(QuoteNode(exception_name))] = $(exception_name)
+            EXCEPTIONS[$(QuoteNode(exception_name))] = $(exception_name)
         end
     )
 end

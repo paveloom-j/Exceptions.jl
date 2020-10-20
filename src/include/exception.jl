@@ -30,9 +30,9 @@ macro_name = :name
 args = (:(arg1::String), :(arg2::Int))
 context = :()
 
-exceptions = Dict{Symbol, Any}()
-exceptions[:DocstringIsNotAString] = Exceptions.Internal.DocstringIsNotAString
-exceptions[:ErrorMessageIsNotAString] = Exceptions.Internal.ErrorMessageIsNotAString
+EXCEPTIONS = Dict{Symbol, Any}()
+EXCEPTIONS[:DocstringIsNotAString] = Exceptions.Internal.DocstringIsNotAString
+EXCEPTIONS[:ErrorMessageIsNotAString] = Exceptions.Internal.ErrorMessageIsNotAString
 
 d1 = @capture_out @macroexpand(@exception(name, arg1::String, arg2::Int)) |>
      linefilter! |> dump
@@ -50,7 +50,7 @@ d2 = @capture_out quote
 
         \$(context)
 
-        e = \$(exceptions)
+        e = \$(EXCEPTIONS)
 
         return esc(
             quote
@@ -129,7 +129,7 @@ macro exception(
 
                 $(context)
 
-                e = $(exceptions)
+                e = $(EXCEPTIONS)
 
                 return esc(
                     quote
