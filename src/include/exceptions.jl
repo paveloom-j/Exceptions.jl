@@ -25,7 +25,6 @@ Create an exception with no fields and push it to the exceptions dictionary.
 - `Expr`: an exception definition (struct + `showerror` overload)
 
 See also: [`@exception`](@ref)
-
 """
 macro aux(
     exception_name::Symbol,
@@ -41,7 +40,7 @@ macro aux(
             mutable struct $(exception_name) <: Exception
             end
 
-            Base.showerror(io::IO, e::$(module_name).$(exception_name)) =
+            Base.showerror(io::IO, e::$(exception_name)) =
             print(
                 io, string(
                     '\n', '\n',

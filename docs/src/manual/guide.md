@@ -143,5 +143,5 @@ end
 ```
 
 By this point, you're probably already interested in these headlines before the error
-messages (probably, how to get rid of them). See more about this on the `Customization`
-page.
+messages (perhaps, in how to get rid of them). See more about this on the
+[Customization](@ref) page.

@@ -18,6 +18,7 @@ makedocs(
 
         "Manual" => [
             "Guide" => "manual/guide.md",
+            "manual/customization.md",
         ],
 
         "Library" => [

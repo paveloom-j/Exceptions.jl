@@ -41,12 +41,12 @@ d2 = @capture_out quote
     macro \$(macro_name)(
         exception_name::Symbol,
         docstring::Union{Expr, String},
-        error_message_bits::Union{Expr, String}...,
+        error_message_bits::Union{Expr, String, Char}...,
     )
         args = \$(args)
 
-        module_name = __module__
-        error_header = "\$(module_name).\$(exception_name):"
+        error_header = "\$(__module__).\$(exception_name):"
+        error_message_bits = ("\\n\\n\$(error_header)\\n", error_message_bits..., '\\n')
 
         \$(context)
 
@@ -72,11 +72,7 @@ d2 = @capture_out quote
                 end
 
                 Base.showerror(io::IO, e::\$(module_name).\$(exception_name)) =
-                print(
-                    '\\n', '\\n',
-                    \$(error_header), '\\n',
-                    \$(error_message_bits...), '\\n',
-                )
+                print(io, \$(error_message_bits...))
             end
         )
     end
@@ -121,18 +117,18 @@ macro exception(
             macro $(macro_name)(
                 exception_name::Symbol,
                 docstring::Union{Expr, String},
-                error_message_bits::Union{Expr, String}...,
+                error_message_bits::Union{Expr, String, Char}...,
             )
                 args = $(args)
 
-                module_name = __module__
-                error_header = "$(module_name).$(exception_name):"
+                error_header = "$(__module__).$(exception_name):"
+                error_message_bits = ("\n\n$(error_header)\n", error_message_bits..., '\n')
 
                 $(context)
 
                 EX = $(EXCEPTIONS)
                 error_message_bits_filtered = filter(
-                    e -> typeof(e) == String || e.head ≠ :(.) && e.args[1] ≠ :(e),
+                    e -> e isa Union{String, Char} || e.head ≠ :(.) && e.args[1] ≠ :(e),
                     error_message_bits,
                 )
 
@@ -151,12 +147,8 @@ macro exception(
                             $(args...)
                         end
 
-                        Base.showerror(io::IO, e::$(module_name).$(exception_name)) =
-                        print(io,
-                            '\n', '\n',
-                            $(error_header), '\n',
-                            $(error_message_bits...), '\n',
-                        )
+                        Base.showerror(io::IO, e::$(exception_name)) =
+                        print(io, $(error_message_bits...))
                     end
                 )
             end
