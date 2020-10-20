@@ -37,3 +37,26 @@ _Easy exception creation._
 ```
 
 A package for the quick creation of customizable exceptions.
+
+## Package Features
+
+- [Create](@ref UsingMacro) exceptions with simple macro calls
+- [Customize](@ref Customization) any bits of exceptions to your liking
+
+## Manual Outline
+
+```@contents
+Pages = map(
+    s -> "manual/$(s)",
+    ["guide.md", "customization.md"],
+)
+```
+
+## Library Outline
+
+```@contents
+Pages = map(
+    s -> "lib/$(s)",
+    ["index.md", "public.md", "internals.md"],
+)
+```

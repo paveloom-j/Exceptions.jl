@@ -78,7 +78,7 @@ What if each of them should have a docstring with the same header and a descript
 fields depending on the number of arguments the exception has? That's where the macro
 provided by this package may be useful.
 
-## Using macro
+## [Using macro](@id UsingMacro)
 
 When creating an exception set, you may encounter the fact that you need to define several
 similar exceptions that have the same number of arguments but differ only by names.
