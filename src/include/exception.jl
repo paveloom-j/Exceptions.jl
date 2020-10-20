@@ -50,31 +50,32 @@ d2 = @capture_out quote
 
         \$(context)
 
-        e = \$(EXCEPTIONS)
+        EX = \$(EXCEPTIONS)
+        error_message_bits_filtered = filter(
+            e -> typeof(e) == String || e.head ≠ :(.) && e.args[1] ≠ :(e),
+            error_message_bits,
+        )
 
         return esc(
             quote
                 # Checks
                 if !(\$(docstring) isa String)
-                    throw(\$(e[:DocstringIsNotAString])())
+                    throw(\$(EX[:DocstringIsNotAString])())
                 end
-                if !(\$(error_message_bits...) isa String)
-                    throw(\$(e[:ErrorMessageIsNotAString])())
+                if !(string(\$(error_message_bits_filtered...)) isa String)
+                    throw(\$(EX[:ErrorMessageIsNotAString])())
                 end
 
                 @doc \$(docstring)
                 mutable struct \$(exception_name) <: Exception
                     \$(args...)
-                    \$(exception_name)(\$(args...)) = new(\$(args...))
                 end
 
                 Base.showerror(io::IO, e::\$(module_name).\$(exception_name)) =
                 print(
-                    io, string(
-                        '\\n', '\\n',
-                        \$(error_header), '\\n',
-                        \$(error_message_bits...), '\\n',
-                    )
+                    '\\n', '\\n',
+                    \$(error_header), '\\n',
+                    \$(error_message_bits...), '\\n',
                 )
             end
         )
@@ -129,31 +130,32 @@ macro exception(
 
                 $(context)
 
-                e = $(EXCEPTIONS)
+                EX = $(EXCEPTIONS)
+                error_message_bits_filtered = filter(
+                    e -> typeof(e) == String || e.head ≠ :(.) && e.args[1] ≠ :(e),
+                    error_message_bits,
+                )
 
                 return esc(
                     quote
                         # Checks
                         if !($(docstring) isa String)
-                            throw($(e[:DocstringIsNotAString])())
+                            throw($(EX[:DocstringIsNotAString])())
                         end
-                        if !($(error_message_bits...) isa String)
-                            throw($(e[:ErrorMessageIsNotAString])())
+                        if !(string($(error_message_bits_filtered...)) isa String)
+                            throw($(EX[:ErrorMessageIsNotAString])())
                         end
 
                         @doc $(docstring)
                         mutable struct $(exception_name) <: Exception
                             $(args...)
-                            $(exception_name)($(args...)) = new($(args...))
                         end
 
                         Base.showerror(io::IO, e::$(module_name).$(exception_name)) =
-                        print(
-                            io, string(
-                                '\n', '\n',
-                                $(error_header), '\n',
-                                $(error_message_bits...), '\n',
-                            )
+                        print(io,
+                            '\n', '\n',
+                            $(error_header), '\n',
+                            $(error_message_bits...), '\n',
                         )
                     end
                 )
