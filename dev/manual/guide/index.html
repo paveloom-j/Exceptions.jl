@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Guide · Exceptions.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/custom.css" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img src="../../assets/logo.svg" alt="Exceptions.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit">Exceptions.jl</span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Manual</span><ul><li class="is-active"><a class="tocitem" href>Guide</a><ul class="internal"><li><a class="tocitem" href="#Installation"><span>Installation</span></a></li><li><a class="tocitem" href="#Creating-an-exception"><span>Creating an exception</span></a></li><li><a class="tocitem" href="#UsingMacro"><span>Using macro</span></a></li></ul></li><li><a class="tocitem" href="../customization/">Customization</a></li></ul></li><li><span class="tocitem">Library</span><ul><li><a class="tocitem" href="../../lib/">Index</a></li><li><a class="tocitem" href="../../lib/public/">Public</a></li><li><a class="tocitem" href="../../lib/internals/">Internals</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Manual</a></li><li class="is-active"><a href>Guide</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Guide</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/paveloom-j/Exceptions.jl/blob/master/docs/src/manual/guide.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Package-Guide"><a class="docs-heading-anchor" href="#Package-Guide">Package Guide</a><a id="Package-Guide-1"></a><a class="docs-heading-anchor-permalink" href="#Package-Guide" title="Permalink"></a></h1><p>This package is designed for both beginners who are not sure how to create an exception and Julia power users who are tired of copying snippets of code containing structure definition and overloading the <code>showerror</code> function.</p><p>It is assumed to be used by developers inside their packages, but the proposed macro should be usable everywhere.</p><h2 id="Installation"><a class="docs-heading-anchor" href="#Installation">Installation</a><a id="Installation-1"></a><a class="docs-heading-anchor-permalink" href="#Installation" title="Permalink"></a></h2><p>The package is available in the <a href="https://github.com/JuliaRegistries/General">General</a> registry, so the installation process is quite simple: from the Julia REPL, type <code>]</code> to enter the Pkg REPL mode and run:</p><pre><code class="language-none">pkg&gt; add Exceptions</code></pre><h2 id="Creating-an-exception"><a class="docs-heading-anchor" href="#Creating-an-exception">Creating an exception</a><a id="Creating-an-exception-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-an-exception" title="Permalink"></a></h2><p>To create a new exception means to create a new data type that is a subtype of <code>Exception</code>. In the simple case, it looks like this:</p><pre><code class="language-julia">mutable struct Name &lt;: Exception
+end</code></pre><p>You can throw such an exception immediately after creation, but the error message will not be very informative:</p><pre><code class="language-julia">try
+  throw(Name())
+catch e
+  showerror(stdout, e)
+end</code></pre><pre class="documenter-example-output">Main.ex-Name.Name()</pre><p>However, it&#39;s pretty easy to fix. As shown in the example, the error message is displayed by the <code>showerror</code> function, which means we can overload this function for our type:</p><pre><code class="language-julia">Base.showerror(io::IO, e::Name) = print(io, &quot;I&#39;m gonna thrill you tonight&quot;)</code></pre><p>Now let&#39;s check it out:</p><pre><code class="language-julia">try
+  throw(Name())
+catch e
+  showerror(stdout, e)
+end</code></pre><pre class="documenter-example-output">I&#39;m gonna thrill you tonight</pre><p>Okay, it&#39;s better. But what if we want to pass arguments to an exception when thrown? Not a problem, additional arguments can be specified inside the type definition. The corresponding constructor is created automatically:</p><pre><code class="language-julia">mutable struct Name &lt;: Exception
+    name::String
+end
+
+Base.showerror(io::IO, e::Name) = print(io, &quot;I&#39;m gonna thrill you tonight, &quot;, e.name)
+
+try
+  throw(Name(&quot;Michael&quot;))
+catch e
+  showerror(stdout, e)
+end</code></pre><pre class="documenter-example-output">I&#39;m gonna thrill you tonight, Michael</pre><p>Okay, it&#39;s not that hard. But wait, what if you need to create twenty such exceptions? What if each of them should have a docstring with the same header and a description of fields depending on the number of arguments the exception has? That&#39;s where the macro provided by this package may be useful.</p><h2 id="UsingMacro"><a class="docs-heading-anchor" href="#UsingMacro">Using macro</a><a id="UsingMacro-1"></a><a class="docs-heading-anchor-permalink" href="#UsingMacro" title="Permalink"></a></h2><p>When creating an exception set, you may encounter the fact that you need to define several similar exceptions that have the same number of arguments but differ only by names.</p><p>For example, imagine the situation that you need to create five exceptions that don&#39;t accept any arguments. For starters, we will create an auxiliary macro:</p><pre><code class="language-julia">using Exceptions
+@exception no_args</code></pre><pre class="documenter-example-output">@no_args (macro with 1 method)</pre><p>What&#39;s happened now? You have now created a helper macro that accepts as arguments a name, a documentation string, and a set of chars, strings, and expressions for the error message.</p><p>You can now create an exception like this:</p><pre><code class="language-julia">@no_args e1 &quot;Docstring&quot; &quot;ErrorMessage&quot;</code></pre><p>Yes, one line for the simplest case. Actually, let&#39;s do a few more.</p><pre><code class="language-julia">@no_args e2 &quot;Doc&quot; * &quot;string&quot; &quot;And though &quot; &quot;you fight &quot; &quot;to stay alive&quot;
+@no_args e3 string(&quot;Doc&quot;, &quot;string&quot;) string(&quot;Your body &quot;, &quot;starts to shiver&quot;)
+@no_args e4 sprint(print, &quot;Docstring&quot;) join([&quot;For no mere mortal&quot;, &quot;can resist&quot;], &#39; &#39;)
+@no_args e5 replace(&quot;Doc&quot;, &quot;Doc&quot; =&gt; &quot;Docstring&quot;) (&quot;The evil &quot;, &quot;of the thriller&quot;)...</code></pre><p>As you can see, the second argument can be both a string and an exception. In doing so, both it and the third argument must yield a string. The first argument can only be a string.</p><p>Let&#39;s look at this stanza:</p><pre><code class="language-julia">for e in [e2, e3, e4, e5]
+    try
+        throw(e())
+    catch e
+        showerror(stdout, e)
+    end
+end</code></pre><pre class="documenter-example-output">
+
+Main.ex-exception.e2:
+And though you fight to stay alive
+
+
+Main.ex-exception.e3:
+Your body starts to shiver
+
+
+Main.ex-exception.e4:
+For no mere mortal can resist
+
+
+Main.ex-exception.e5:
+The evil of the thriller</pre><p>Okay, how about some arguments?</p><pre><code class="language-julia">@exception one_arg name::String
+@exception two_args name number::Int
+
+@one_arg e6 &quot;Docstring&quot; &quot;Gimme the cash, &quot; e.name &quot;!&quot;
+@two_args e7 &quot;Docstring&quot; &quot;Is that a &quot; e.name &quot;-&quot; e.number &quot;? A very dangerous gun.&quot;
+
+for e in [e6 =&gt; (&quot;Korben&quot;,), e7 =&gt; (&quot;Z&quot;, 140)]
+    try
+        throw(e.first(e.second...))
+    catch e
+        showerror(stdout, e)
+    end
+end</code></pre><pre class="documenter-example-output">
+
+Main.ex-exception.e6:
+Gimme the cash, Korben!
+
+
+Main.ex-exception.e7:
+Is that a Z-140? A very dangerous gun.</pre><p>By this point, you&#39;re probably already interested in these headlines before the error messages (perhaps, in how to get rid of them). See more about this on the <a href="../customization/#Customization">Customization</a> page.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../customization/">Customization »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Wednesday 21 October 2020 07:28">Wednesday 21 October 2020</span>. Using Julia version 1.5.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
