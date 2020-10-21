@@ -1,14 +1,15 @@
 # This piece of code defines the main macro of this package
 
 """
-    @exception(macro_name::Symbol, args::Expr...; context::Expr=:()) -> Expr
+    @exception(macro_name::Symbol, args::Union{Symbol, Expr}...; context::Expr=:()) -> Expr
 
 Create a macro to create exceptions. Optionally inject context before defining
 the structure.
 
 # Arguments
 - `macro_name::Symbol`: name of the macro
-- `args::Tuple{Vararg{Expr}}`: a set of fields to be defined in the exception structure
+- `args::Tuple{Vararg{Union{Symbol, Expr}}}`: a set of fields to be defined in the
+  exception structure
 
 # Keywords
 - `context::Expr=:()`: expression evaluated before defining the exception structure
@@ -27,15 +28,16 @@ using Suppressor
 using SyntaxTree
 
 macro_name = :name
-args = (:(arg1::String), :(arg2::Int))
+args = (:(arg1::String), :(arg2))
 context = :()
 
 EXCEPTIONS = Dict{Symbol, Any}()
 EXCEPTIONS[:DocstringIsNotAString] = Exceptions.Internal.DocstringIsNotAString
 EXCEPTIONS[:ErrorMessageIsNotAString] = Exceptions.Internal.ErrorMessageIsNotAString
 
-d1 = @capture_out @macroexpand(@exception(name, arg1::String, arg2::Int)) |>
-     linefilter! |> dump
+d1 = @capture_out(
+    @macroexpand(@exception(name, arg1::String, arg2)) |> linefilter! |> dump
+)
 
 d2 = @capture_out quote
     macro \$(macro_name)(
@@ -87,7 +89,7 @@ true
 """
 macro exception(
     macro_name::Symbol,
-    args::Expr...,
+    args::Union{Symbol, Expr}...,
 )
     context_specified = false
     context = :()
@@ -154,5 +156,4 @@ macro exception(
             end
         end
     )
-
 end

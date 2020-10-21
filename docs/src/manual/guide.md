@@ -38,8 +38,8 @@ catch e
 end
 ```
 
-But it's pretty easy to fix. As shown in the example, the error message is displayed by the
-`showerror` function, which means we can overload this function for our type:
+However, it's pretty easy to fix. As shown in the example, the error message is displayed
+by the `showerror` function, which means we can overload this function for our type:
 
 ```@example Name
 Base.showerror(io::IO, e::Name) = print(io, "I'm gonna thrill you tonight")
@@ -92,7 +92,8 @@ using Exceptions
 ```
 
 What's happened now? You have now created a helper macro that accepts as arguments
-a name, a documentation string, and a set of strings or expressions for the error message.
+a name, a documentation string, and a set of chars, strings, and expressions for the error
+message.
 
 You can now create an exception like this:
 
@@ -128,7 +129,7 @@ Okay, how about some arguments?
 
 ```@example exception
 @exception one_arg name::String
-@exception two_args name::String number::Int
+@exception two_args name number::Int
 
 @one_arg e6 "Docstring" "Gimme the cash, " e.name "!"
 @two_args e7 "Docstring" "Is that a " e.name "-" e.number "? A very dangerous gun."

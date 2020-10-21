@@ -33,7 +33,7 @@ catch e
 end
 ```
 
-What kind of headline is that you might ask. For an answer, let's look a little further
+What is that headline, you might ask? For an answer, let's look a little further
 behind the scenes:
 
 ```julia
@@ -93,8 +93,9 @@ end
 Note that it is the code block (`begin end`) that should be passed as the context,
 not the quote (`quote end`) or the expression (`:()`).
 
-Further, it all depends only on goals and fantasy. See also the macro's documentation
-string ([`@exception`](@ref)) for a full picture of what's going on behind the scenes
-and what you can influence. You can also see the real use of this macro in the code of the
+Further, it all depends only on your goals and imagination. See also the macro's
+documentation string ([`@exception`](@ref)) for a full picture of what's going on behind
+the scenes and what you can influence. You can also see the real use of this macro in the
+code of the
 [PDFHighlights.jl](https://github.com/paveloom-j/PDFHighlights.jl/blob/master/src/Exceptions/Exceptions.jl)
 package.
