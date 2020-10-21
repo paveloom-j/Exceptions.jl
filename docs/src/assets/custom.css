@@ -11,10 +11,10 @@ code {
 
 /* Give some space to the logo */
 
-/* div#documenter .docs-sidebar .docs-logo > img {
+div#documenter .docs-sidebar .docs-logo > img {
     max-height: 10em;
 }
 
 div#documenter .docs-sidebar .docs-package-name {
     padding-top: 1rem;
-} */
+}

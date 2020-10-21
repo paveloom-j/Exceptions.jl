@@ -1,4 +1,4 @@
-# Internal
+# Internals
 
 ## Modules
 

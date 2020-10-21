@@ -1,9 +1,15 @@
 __precompile__()
 
-"f"
+"""
+A package for the quick creation of customizable exceptions.
+
+Links:
+- Repo: https://github.com/paveloom-j/Exceptions.jl
+- Docs: https://paveloom-j.github.io/Exceptions.jl
+"""
 baremodule Exceptions
 
-"f"
+"This module contains all inner parts of this package."
 module Internal
 
 export @exception

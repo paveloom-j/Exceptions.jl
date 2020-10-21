@@ -16,10 +16,15 @@ makedocs(
     pages = [
         "Home" => "index.md",
 
+        "Manual" => [
+            "Guide" => "manual/guide.md",
+            "manual/customization.md",
+        ],
+
         "Library" => [
             "Index" => "lib/index.md",
             "Public" => "lib/public.md",
-            "Internals" => "lib/internals.md"
+            "lib/internals.md",
         ],
     ],
 

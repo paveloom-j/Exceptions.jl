@@ -36,6 +36,7 @@ end
             docstring = "Doc" * docstring
         end
     end)
+    @test_nowarn eval(quote @exception m3 file s::Symbol end)
 
     @test_throws(
         Exceptions.Internal.OnlyOneContext,
@@ -106,6 +107,15 @@ end
 
     @test fieldnames(e2) == (:file, :s)
     @test "$(@doc(e2))" == "Docstring\n"
+
+end
+
+# Arguments with type `Any`
+@testset "@m3" begin
+
+    @test_nowarn eval(quote @m3 e3 "Docstring" "ErrorMessage" end)
+    @test e3.types[1] == Any
+    @test e3.types[2] == Symbol
 
 end
 
