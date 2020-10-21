@@ -60,3 +60,5 @@ Pages = map(
     ["index.md", "public.md", "internals.md"],
 )
 ```
+
+Logo from [icons8.com](https://icons8.com).
