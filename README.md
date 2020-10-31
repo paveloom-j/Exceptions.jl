@@ -2,9 +2,9 @@
 
 _Easy exception creation._
 
-| __Documentation__                                                         | __Code Coverage__               | __License__                     |
-|:-------------------------------------------------------------------------:|:-------------------------------:|:-------------------------------:|
-| [![][docs-stable-img]][docs-stable-url] [![][docs-dev-img]][docs-dev-url] | [![][codecov-img]][codecov-url] | [![][license-img]][license-url] |
+| __Documentation__                                                         | __Code Coverage__               | **Playground**                        |
+|:-------------------------------------------------------------------------:|:-------------------------------:|:-------------------------------------:|
+| [![][docs-stable-img]][docs-stable-url] [![][docs-dev-img]][docs-dev-url] | [![][codecov-img]][codecov-url] | [![][playground-img]][playground-url] |
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: https://paveloom-j.github.io/Exceptions.jl
@@ -17,5 +17,8 @@ _Easy exception creation._
 
 [license-img]: https://img.shields.io/badge/license-MIT-5DA399.svg
 [license-url]: https://github.com/paveloom-j/Exceptions.jl/blob/master/LICENSE.md
+
+[playground-img]: https://mybinder.org/badge_logo.svg
+[playground-url]: https://mybinder.org/v2/gh/paveloom-j/Exceptions.jl/master?urlpath=lab/tree/playground.ipynb
 
 A package for the quick creation of customizable exceptions.
