@@ -1,7 +1,7 @@
 name = "Exceptions"
 uuid = "25a0344a-2aab-46d0-b534-6f1410d4c65f"
 authors = ["Pavel Sobolev <paveloom@mail.ru>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 SyntaxTree = "a4af3ec5-f8ac-5fed-a759-c2e80b4d74cb"
