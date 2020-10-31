@@ -6,3 +6,6 @@ Manifest.toml
 
 # Side files when generating documentation
 docs/build
+
+# Jupyter checkpoints
+.ipynb_checkpoints
