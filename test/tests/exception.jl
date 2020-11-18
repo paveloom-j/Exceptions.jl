@@ -39,11 +39,6 @@ end
     @test_nowarn eval(quote @exception m3 file s::Symbol end)
 
     @test_throws(
-        Exceptions.Internal.OnlyOneContext,
-        quote @exception(m, context=c1, context=c2) end,
-    )
-
-    @test_throws(
         Exceptions.Internal.OnlyOneEquation,
         quote @exception(m, var=v1) end,
     )
