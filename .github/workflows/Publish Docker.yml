@@ -1,11 +1,11 @@
 name: Publish Docker
 
 on:
-  release:
-      types: [published, released]
   push:
     branches:
       - develop
+    tags:
+      - v*
 
 jobs:
   BuildAndPublish:
