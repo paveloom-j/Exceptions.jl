@@ -18,7 +18,6 @@ the structure.
 - `Expr`: new macro definition
 
 # Throws
-- [`OnlyOneContext`](@ref): more than one context has been passed
 - [`OnlyOneEquation`](@ref): more than one equation has been passed
 
 # Example

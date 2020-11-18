@@ -76,6 +76,6 @@ end
 @aux(
     OnlyOneEquation,
     "Exception thrown when a non-context equation has been passed.",
-    "Equation is only available for one expression with the first argument " *
+    "Equations are only available for expressions with the first argument " *
     "equal to `context`.",
 )
