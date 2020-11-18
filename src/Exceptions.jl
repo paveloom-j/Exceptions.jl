@@ -10,15 +10,17 @@ Links:
 baremodule Exceptions
 
 "This module contains all inner parts of this package."
-module Internal
+baremodule Internal
 
 export @exception
 
+using Base
+
 # Load exceptions
-include("include/exceptions.jl")
+Base.include(Internal, "include/exceptions.jl")
 
 # Load macros
-include("include/exception.jl")
+Base.include(Internal, "include/exception.jl")
 
 end
 
