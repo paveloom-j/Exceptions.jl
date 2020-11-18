@@ -18,7 +18,6 @@ the structure.
 - `Expr`: new macro definition
 
 # Throws
-- [`OnlyOneContext`](@ref): more than one context has been passed
 - [`OnlyOneEquation`](@ref): more than one equation has been passed
 
 # Example
@@ -73,7 +72,7 @@ d2 = @capture_out quote
                     \$(args...)
                 end
 
-                Base.showerror(io::IO, e::\$(module_name).\$(exception_name)) =
+                Base.showerror(io::IO, e::\$(exception_name)) =
                 print(io, \$(error_message_bits...))
             end
         )
@@ -91,20 +90,14 @@ macro exception(
     macro_name::Symbol,
     args::Union{Symbol, Expr}...,
 )
-    context_specified = false
     context = :()
 
     for (index, arg) in pairs(args)
         if typeof(arg) == Expr
             if arg.head == :(=)
                 if arg.args[1] == :context
-                    if context_specified
-                        throw(OnlyOneContext())
-                    else
-                        context = args[index]
-                        args = args[1:end .≠ index]
-                        context_specified = true
-                    end
+                    context = args[index]
+                    args = args[1:end .≠ index]
                 else
                     throw(OnlyOneEquation())
                 end
